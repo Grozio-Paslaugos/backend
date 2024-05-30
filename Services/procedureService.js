@@ -49,7 +49,7 @@ class ProcedureService {
    * @returns {Array} - An array of procedure objects.
    */
 
-  async getProcedure() {
+  async getProcedures() {
     const procedures = await Procedure.find({});
     return procedures;
   }

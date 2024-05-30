@@ -88,7 +88,7 @@ class UserService {
     return users.map((user) => ({
       _id: user.id,
       name: user.name,
-      email: user.mail,
+      email: user.email,
       phone: user.phone,
       role: user.role,
     }));
@@ -99,7 +99,7 @@ class UserService {
     if (!user) {
       throw new Error("User not found");
     }
-    await user.remove();
+    await user.deleteOne();
     return { message: "User deleted successfully" };
   }
 }

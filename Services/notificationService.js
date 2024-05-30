@@ -34,6 +34,7 @@ class NotificationService {
    */
 
   async getNotification(notificationId) {
+    const notification = await Notification.findById(notificationId);
     if (!notification) {
       throw new Error("Notification not found");
     }

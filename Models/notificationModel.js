@@ -12,7 +12,7 @@ const notificationSchema = new mongoose.Schema(
       required: true,
     },
     status: {
-      type: String,
+      type: String, // veliau bus galima naudoti enum
       required: true,
     },
   },
