@@ -58,6 +58,20 @@ class BookingService {
   }
 
   /**
+   * Retrieves bookings by user ID.
+   *
+   * @param {string} userId - The ID of the user.
+   * @returns {Array} - An array of booking objects
+   */
+
+  async getBookingsByUser(userId) {
+    const bookings = await Booking.find({ user_id: userId })
+      .populate("user_id")
+      .populate("procedure_id");
+    return bookings;
+  }
+
+  /**
    * Updates a booking by its ID.
    *
    * @param {string} bookingId - The ID of the booking.
