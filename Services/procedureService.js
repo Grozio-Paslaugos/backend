@@ -5,23 +5,23 @@ class ProcedureService {
    * Creates a new procedure.
    *
    * @param {string} name - The name of the procedure.
-   * @param {string} description - The description of the procedure.
-   * @param {number} duration - The duration of the procedure in minutes.
-   * @param {number} price - The price of the procedure in euros.
+   * @param {string} category - The categot of the procedure.
+   * @param {string} date - The date of the procedure.
+   * @param {string} image - The image url of the procedure.
    * @returns {Object} - The created procedure object.
    * @throws {Error} - Throws an error if any required field is missing.
    */
 
-  async createProcedure(name, description, duration, price) {
-    if (!name || !description || !duration || !price) {
+  async createProcedure(name, category, date, image) {
+    if (!name || !category || !date || !image) {
       throw new Error("Please fill all fields");
     }
 
     const procedure = await Procedure.create({
       name,
-      description,
-      duration,
-      price,
+      category,
+      date,
+      image,
     });
 
     return procedure;
@@ -67,7 +67,7 @@ class ProcedureService {
     const procedure = await Procedure.findByIdAndUpdate(
       procedureId,
       updateData,
-      { new: true },
+      { new: true }
     );
     if (!procedure) {
       throw new Error("Procedure not found");
