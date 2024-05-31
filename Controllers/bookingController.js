@@ -40,6 +40,17 @@ const getBookings = asyncHandler(async (req, res) => {
   }
 });
 
+// get bookings by user
+const getBookingsByUser = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const bookings = await bookingService.getBookingsByUser(userId);
+    res.status(200).json(bookings);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 // update booking
 
 const updateBooking = asyncHandler(async (req, res) => {
@@ -69,6 +80,7 @@ module.exports = {
   createBooking,
   getBooking,
   getBookings,
+  getBookingsByUser,
   updateBooking,
   deleteBooking,
 };
