@@ -6,20 +6,20 @@ const procedureSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please add procedure name"],
     },
-    description: {
+    category: {
       type: String,
-      required: [true, "Please add procedure description"],
+      required: [true, "Please add procedure category"],
     },
-    duration: {
-      type: Number,
-      required: [true, "Please add procedure duration (in minutes)"],
+    date: {
+      type: String,
+      required: [true, "Please add procedure date"],
     },
-    price: {
-      type: Number,
-      required: [true, "Please add procedure price (in euros)"],
+    image: {
+      type: String,
+      required: [true, "Please add procedure image url"],
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Procedure", procedureSchema);
