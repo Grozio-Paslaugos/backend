@@ -11,6 +11,7 @@ const {
   getProcedures,
   updateProcedure,
   deleteProcedure,
+  getAllCategories,
 } = require("../Controllers/procedureController");
 
 // middleware functions
@@ -29,18 +30,19 @@ const { verifyToken, checkAdminRole } = require("../Middleware/authMiddleware");
 
 router.post("/create", verifyToken, checkAdminRole, createProcedure);
 router.get("/", verifyToken, checkAdminRole, getProcedures);
+router.get("/cat", verifyToken, getAllCategories);
 router.get("/:procedureId", verifyToken, checkAdminRole, getProcedure);
 router.put(
   "/update/:procedureId",
   verifyToken,
   checkAdminRole,
-  updateProcedure,
+  updateProcedure
 );
 router.delete(
   "/delete/:procedureId",
   verifyToken,
   checkAdminRole,
-  deleteProcedure,
+  deleteProcedure
 );
 
 module.exports = router;

@@ -90,6 +90,13 @@ class ProcedureService {
     }
     return procedure;
   }
+  async getAllCategories() {
+    const categories = await Procedure.distinct("category");
+    if (!categories) {
+      throw new Error("No categories found");
+    }
+    return categories;
+  }
 }
 
 module.exports = new ProcedureService();
