@@ -12,11 +12,16 @@ const ratingSchema = new mongoose.Schema(
       ref: "Procedure",
       required: true,
     },
-    rating: {
+    averageRating: {
       type: Number,
       required: true,
       min: 1,
       max: 5,
+    },
+    totalRating: {
+      type: Number,
+      required: false,
+      min: 0
     },
     comment: {
       type: String,

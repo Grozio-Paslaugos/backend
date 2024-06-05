@@ -10,6 +10,10 @@ const procedureSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please add procedure category"],
     },
+    price: {
+      type: Number,
+      required: [true, "Please add procedure price"],
+    },
     date: {
       type: String,
       required: [true, "Please add procedure date"],

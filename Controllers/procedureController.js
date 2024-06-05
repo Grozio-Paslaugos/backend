@@ -4,13 +4,14 @@ const asyncHandler = require("express-async-handler");
 // create procedure
 
 const createProcedure = asyncHandler(async (req, res) => {
-  const { name, category, date, image } = req.body;
+  const { name, category, date, image, price } = req.body;
   try {
     const procedure = await procedureService.createProcedure(
       name,
       category,
       date,
-      image
+      image,
+      price,
     );
     res.status(201).json(procedure);
   } catch (error) {
