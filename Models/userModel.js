@@ -1,3 +1,5 @@
+/** @format */
+
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
@@ -27,13 +29,16 @@ const userSchema = new mongoose.Schema(
       unique: true,
       validate: {
         validator: function (v) {
-          return /^\+370\d{8}$/.test(v); // lietuviskam numeriui
+          return /^\+370\d{8}$/.test(v); // Lithuanian phone number
         },
         message: (props) => `${props.value} is not a valid phone number`,
       },
     },
+    registeredProcedures: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Procedure" },
+    ],
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("User", userSchema);

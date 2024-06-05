@@ -1,3 +1,5 @@
+/** @format */
+
 const mongoose = require("mongoose");
 
 const procedureSchema = new mongoose.Schema(
@@ -18,6 +20,7 @@ const procedureSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please add procedure image url"],
     },
+    registeredUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );

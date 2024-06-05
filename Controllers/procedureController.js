@@ -1,8 +1,11 @@
+/** @format */
+
 const procedureService = require("../Services/procedureService");
 const asyncHandler = require("express-async-handler");
+const Procedure = require("../Models/procedureModel");
+const User = require("../Models/userModel");
 
-// create procedure
-
+// Create procedure
 const createProcedure = asyncHandler(async (req, res) => {
   const { name, category, date, image } = req.body;
   try {
@@ -18,8 +21,7 @@ const createProcedure = asyncHandler(async (req, res) => {
   }
 });
 
-// get procedure
-
+// Get procedure
 const getProcedure = asyncHandler(async (req, res) => {
   const { procedureId } = req.params;
   try {
@@ -30,8 +32,7 @@ const getProcedure = asyncHandler(async (req, res) => {
   }
 });
 
-// get procedures
-
+// Get procedures
 const getProcedures = asyncHandler(async (req, res) => {
   try {
     const procedures = await procedureService.getProcedures();
@@ -41,8 +42,7 @@ const getProcedures = asyncHandler(async (req, res) => {
   }
 });
 
-// update procedure
-
+// Update procedure
 const updateProcedure = asyncHandler(async (req, res) => {
   const { procedureId } = req.params;
   const updateData = req.body;
@@ -57,8 +57,7 @@ const updateProcedure = asyncHandler(async (req, res) => {
   }
 });
 
-// delete procedure
-
+// Delete procedure
 const deleteProcedure = asyncHandler(async (req, res) => {
   const { procedureId } = req.params;
   try {
@@ -69,10 +68,53 @@ const deleteProcedure = asyncHandler(async (req, res) => {
   }
 });
 
+// Register user to procedure
+const registerUserToProcedure = asyncHandler(async (req, res) => {
+  const { userId, procedureId } = req.body;
+  try {
+    const procedure = await Procedure.findById(procedureId);
+    const user = await User.findById(userId);
+
+    if (!procedure || !user) {
+      return res.status(404).json({ message: "Procedure or User not found" });
+    }
+
+    procedure.registeredUsers.push(userId);
+    user.registeredProcedures.push(procedureId);
+
+    await procedure.save();
+    await user.save();
+
+    res
+      .status(200)
+      .json({ message: "User registered to procedure successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Get registered procedures
+const getRegisteredProcedures = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const user = await User.findById(userId).populate("registeredProcedures");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ registeredProcedures: user.registeredProcedures });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = {
   createProcedure,
   getProcedure,
   getProcedures,
   updateProcedure,
   deleteProcedure,
+  registerUserToProcedure,
+  getRegisteredProcedures,
 };

@@ -1,32 +1,19 @@
-// server
+/** @format */
 
 const express = require("express");
 const router = express.Router();
-
-// Procedure functions
-
 const {
   createProcedure,
   getProcedure,
   getProcedures,
   updateProcedure,
   deleteProcedure,
+  registerUserToProcedure,
+  getRegisteredProcedures,
 } = require("../Controllers/procedureController");
-
-// middleware functions
-
 const { verifyToken, checkAdminRole } = require("../Middleware/authMiddleware");
 
 // Procedure routes
-// http://localhost:5000/api/procedures/<...>
-// Requires Bearer Token
-/*
- *     "name": "manikiuras",
- *     "description": "graziai padarysime",
- *     "duration": "90"
- *     "price": "30"
- */
-
 router.post("/create", verifyToken, checkAdminRole, createProcedure);
 router.get("/", verifyToken, checkAdminRole, getProcedures);
 router.get("/:procedureId", verifyToken, checkAdminRole, getProcedure);
@@ -34,13 +21,15 @@ router.put(
   "/update/:procedureId",
   verifyToken,
   checkAdminRole,
-  updateProcedure,
+  updateProcedure
 );
 router.delete(
   "/delete/:procedureId",
   verifyToken,
   checkAdminRole,
-  deleteProcedure,
+  deleteProcedure
 );
+router.post("/register", verifyToken, registerUserToProcedure); // Register user to procedure
+router.get("/registered/:userId", verifyToken, getRegisteredProcedures); // Get registered procedures
 
 module.exports = router;
