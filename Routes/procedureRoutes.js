@@ -30,7 +30,7 @@ const { verifyToken, checkAdminRole } = require("../Middleware/authMiddleware");
 
 router.post("/create", verifyToken, createProcedure);
 router.get("/", getProcedures);
-router.get("/all", getAllCategories);
+router.get("/categories", getAllCategories);
 router.get("/:procedureId", getProcedure);
 router.put("/update/:procedureId", verifyToken, updateProcedure);
 router.delete("/delete/:procedureId", verifyToken, deleteProcedure);

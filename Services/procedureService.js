@@ -67,7 +67,7 @@ class ProcedureService {
     const procedure = await Procedure.findByIdAndUpdate(
       procedureId,
       updateData,
-      { new: true }
+      { new: true },
     );
     if (!procedure) {
       throw new Error("Procedure not found");

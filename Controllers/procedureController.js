@@ -10,7 +10,7 @@ const createProcedure = asyncHandler(async (req, res) => {
       name,
       category,
       date,
-      image
+      image,
     );
     res.status(201).json(procedure);
   } catch (error) {
@@ -49,7 +49,7 @@ const updateProcedure = asyncHandler(async (req, res) => {
   try {
     const procedure = await procedureService.updateProcedure(
       procedureId,
-      updateData
+      updateData,
     );
     res.status(200).json(procedure);
   } catch (error) {
