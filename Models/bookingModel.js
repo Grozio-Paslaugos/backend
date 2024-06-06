@@ -1,3 +1,5 @@
+/** @format */
+
 const mongoose = require("mongoose");
 
 const bookingSchema = new mongoose.Schema(
@@ -22,7 +24,7 @@ const bookingSchema = new mongoose.Schema(
       default: "pending",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Booking", bookingSchema);

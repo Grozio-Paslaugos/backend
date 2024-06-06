@@ -1,16 +1,5 @@
 const User = require("../Models/userModel");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-
-const generateToken = (id) => {
-  return (
-    jwt.sign({ id }),
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "30d",
-    }
-  );
-};
+const bcrypt = require("bcryptjs");
 
 class UserService {
   async registerUser(name, email, password, phone) {
@@ -19,12 +8,11 @@ class UserService {
     }
 
     const userExists = await User.findOne({ email });
-
     if (userExists) {
-      throw new Error("Email already registered");
+      throw new Error("User already exists");
     }
 
-    const salt = await bcrypt.genSalt(8);
+    const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = await User.create({
@@ -34,30 +22,26 @@ class UserService {
       phone,
     });
 
-    return {
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      role: user.role,
-    };
+    return user;
   }
 
   async loginUser(email, password) {
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      throw new Error("User not found");
+    if (!email || !password) {
+      throw new Error("Please fill all fields");
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new Error("Invalid email or password");
+    }
 
-    if (!isPasswordValid) {
-      throw new Error("Invalid password");
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      throw new Error("Invalid email or password");
     }
 
     return {
-      _id: user.id,
+      _id: user._id,
       name: user.name,
       email: user.email,
       phone: user.phone,
@@ -66,7 +50,8 @@ class UserService {
   }
 
   async logoutUser(userId) {
-    return { message: "Logged out sucessfully" };
+    // Implement any logic needed for logging out a user, if necessary
+    return { message: "User logged out successfully" };
   }
 
   async getUser(userId) {
@@ -74,32 +59,19 @@ class UserService {
     if (!user) {
       throw new Error("User not found");
     }
-    return {
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      role: user.role,
-    };
+    return user;
   }
 
   async getUsers() {
-    const users = await User.find({});
-    return users.map((user) => ({
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      role: user.role,
-    }));
+    const users = await User.find();
+    return users;
   }
 
   async deleteUser(userId) {
-    const user = await User.findById(userId);
+    const user = await User.findByIdAndDelete(userId);
     if (!user) {
       throw new Error("User not found");
     }
-    await user.deleteOne();
     return { message: "User deleted successfully" };
   }
 }

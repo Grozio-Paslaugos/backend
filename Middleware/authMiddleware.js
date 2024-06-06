@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const User = require("../Models/userModel");
 
 const verifyToken = (req, res, next) => {
   const bearerHeader = req.header("Authorization");
@@ -16,14 +17,17 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-const checkAdminRole = (req, res, next) => {
-  console.log("Checking admin role of user:", req.user.id);
-  if (req.user.role !== "admin") {
-    console.log("User is not admin");
-    return res.status(403).send("Access Denied. Admin role required.");
+const checkAdminRole = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (user && user.role === "admin") {
+      next();
+    } else {
+      return res.status(403).send("Access Denied. Admin role required.");
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
   }
-  console.log("User is an admin");
-  next();
 };
 
 module.exports = { verifyToken, checkAdminRole };

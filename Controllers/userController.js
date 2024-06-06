@@ -3,7 +3,6 @@ const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 
 // user register
-
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, phone } = req.body;
   try {
@@ -15,7 +14,6 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 // user login
-
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -23,28 +21,26 @@ const loginUser = asyncHandler(async (req, res) => {
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" },
+      { expiresIn: "1h" }
     );
-    res.status(200).json({ message: "Login successful", user, token });
+    res.status(200).json({ user, token });
   } catch (error) {
     res.status(400).json({ error: "Login failed: " + error.message });
   }
 });
 
 // user logout
-
 const logoutUser = asyncHandler(async (req, res) => {
   const { userId } = req.body;
   try {
     const response = await userService.logoutUser(userId);
-    res.status(200).json({ message: "Logged out sucessfully" });
+    res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     res.status(400).json({ error: "Logout failed: " + error.message });
   }
 });
 
 // get user
-
 const getUser = asyncHandler(async (req, res) => {
   const { userId } = req.params;
   try {
@@ -56,7 +52,6 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 // get users
-
 const getUsers = asyncHandler(async (req, res) => {
   try {
     const users = await userService.getUsers();
@@ -67,7 +62,6 @@ const getUsers = asyncHandler(async (req, res) => {
 });
 
 // delete user
-
 const deleteUser = asyncHandler(async (req, res) => {
   const { userId } = req.params;
   try {

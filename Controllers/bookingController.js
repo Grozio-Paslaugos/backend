@@ -1,19 +1,20 @@
+/** @format */
+
 const bookingService = require("../Services/bookingService");
 const asyncHandler = require("express-async-handler");
 
-// create booking
-
+// Create booking
 const createBooking = asyncHandler(async (req, res) => {
+  console.log("Booking request received with:", req.body);
   const { userId, procedureId, bookingDatetime } = req.body;
+  if (!userId || !procedureId || !bookingDatetime) {
+    return res.status(400).json({ message: "Please fill all fields" });
+  }
   try {
-    const booking = await bookingService.createBooking(
-      userId,
-      procedureId,
-      bookingDatetime,
-    );
+    const booking = await bookingService.createBooking(userId, procedureId, bookingDatetime);
     res.status(201).json(booking);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: "Server error" });
   }
 });
 

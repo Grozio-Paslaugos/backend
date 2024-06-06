@@ -6,7 +6,7 @@ const cors = require("cors");
 const connectToDB = require("./Config/db");
 
 // Initialize express app
-const app = express();
+const app = express();  // Ensure 'app' is declared only once
 
 // Connect to the database
 connectToDB();

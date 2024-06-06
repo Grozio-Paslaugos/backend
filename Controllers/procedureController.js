@@ -1,6 +1,7 @@
 /** @format */
 
 const procedureService = require("../Services/procedureService");
+const bookingService = require("../Services/bookingService");
 const asyncHandler = require("express-async-handler");
 const Procedure = require("../Models/procedureModel");
 const User = require("../Models/userModel");
@@ -70,40 +71,48 @@ const deleteProcedure = asyncHandler(async (req, res) => {
 
 // Register user to procedure
 const registerUserToProcedure = asyncHandler(async (req, res) => {
-  const { userId, procedureId } = req.body;
+  const { userId, procedureId, bookingDatetime } = req.body;
   try {
     const procedure = await Procedure.findById(procedureId);
     const user = await User.findById(userId);
 
-    if (!procedure || !user) {
-      return res.status(404).json({ message: "Procedure or User not found" });
+    if (!procedure) {
+      return res.status(404).json({ message: "Procedure not found" });
     }
-
-    procedure.registeredUsers.push(userId);
-    user.registeredProcedures.push(procedureId);
-
-    await procedure.save();
-    await user.save();
-
-    res
-      .status(200)
-      .json({ message: "User registered to procedure successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Get registered procedures
-const getRegisteredProcedures = asyncHandler(async (req, res) => {
-  const { userId } = req.params;
-  try {
-    const user = await User.findById(userId).populate("registeredProcedures");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ registeredProcedures: user.registeredProcedures });
+    // Create a booking
+    const booking = await bookingService.createBooking(
+      userId,
+      procedureId,
+      bookingDatetime
+    );
+
+    res
+      .status(200)
+      .json({ message: "User registered to procedure successfully", booking });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+// Get registered procedures
+const getRegisteredProcedures = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const bookings = await bookingService.getBookingsByUser(userId);
+
+    if (!bookings) {
+      return res
+        .status(404)
+        .json({ message: "Bookings not found for this user" });
+    }
+
+    res.status(200).json({ registeredProcedures: bookings });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

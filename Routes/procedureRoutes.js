@@ -1,5 +1,3 @@
-/** @format */
-
 const express = require("express");
 const router = express.Router();
 const {
@@ -15,8 +13,8 @@ const { verifyToken, checkAdminRole } = require("../Middleware/authMiddleware");
 
 // Procedure routes
 router.post("/create", verifyToken, checkAdminRole, createProcedure);
-router.get("/", verifyToken, checkAdminRole, getProcedures);
-router.get("/:procedureId", verifyToken, checkAdminRole, getProcedure);
+router.get("/", verifyToken, getProcedures); // Remove admin role check for fetching procedures
+router.get("/:procedureId", verifyToken, getProcedure);
 router.put(
   "/update/:procedureId",
   verifyToken,
