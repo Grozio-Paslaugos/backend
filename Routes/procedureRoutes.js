@@ -6,15 +6,18 @@ const {
   getProcedures,
   updateProcedure,
   deleteProcedure,
+
   registerUserToProcedure,
   getRegisteredProcedures,
+  getAllCategories,
 } = require("../Controllers/procedureController");
 const { verifyToken, checkAdminRole } = require("../Middleware/authMiddleware");
 
 // Procedure routes
 router.post("/create", verifyToken, checkAdminRole, createProcedure);
-router.get("/", verifyToken, getProcedures); // Remove admin role check for fetching procedures
-router.get("/:procedureId", verifyToken, getProcedure);
+router.get("/", verifyToken, checkAdminRole, getProcedures);
+router.get("/cat", verifyToken, getAllCategories);
+router.get("/:procedureId", verifyToken, checkAdminRole, getProcedure);
 router.put(
   "/update/:procedureId",
   verifyToken,

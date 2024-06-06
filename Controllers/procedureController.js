@@ -68,6 +68,15 @@ const deleteProcedure = asyncHandler(async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 });
+//get all categories
+const getAllCategories = asyncHandler(async (req, res) => {
+  try {
+    const categories = await procedureService.getAllCategories();
+    res.status(200).json(categories);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
 // Register user to procedure
 const registerUserToProcedure = asyncHandler(async (req, res) => {
@@ -126,4 +135,6 @@ module.exports = {
   deleteProcedure,
   registerUserToProcedure,
   getRegisteredProcedures,
+  getAllCategories,
+
 };
