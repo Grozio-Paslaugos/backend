@@ -28,21 +28,11 @@ const { verifyToken, checkAdminRole } = require("../Middleware/authMiddleware");
  *     "price": "30"
  */
 
-router.post("/create", verifyToken, checkAdminRole, createProcedure);
-router.get("/", verifyToken, checkAdminRole, getProcedures);
+router.post("/create", verifyToken, createProcedure);
+router.get("/", verifyToken, getProcedures);
 router.get("/cat", verifyToken, getAllCategories);
-router.get("/:procedureId", verifyToken, checkAdminRole, getProcedure);
-router.put(
-  "/update/:procedureId",
-  verifyToken,
-  checkAdminRole,
-  updateProcedure
-);
-router.delete(
-  "/delete/:procedureId",
-  verifyToken,
-  checkAdminRole,
-  deleteProcedure
-);
+router.get("/:procedureId", verifyToken, getProcedure);
+router.put("/update/:procedureId", verifyToken, updateProcedure);
+router.delete("/delete/:procedureId", verifyToken, deleteProcedure);
 
 module.exports = router;
