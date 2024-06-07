@@ -2,14 +2,16 @@ const bookingService = require("../Services/bookingService");
 const asyncHandler = require("express-async-handler");
 
 // create booking
-
 const createBooking = asyncHandler(async (req, res) => {
   const { userId, procedureId, bookingDatetime } = req.body;
+
+  console.log('Received Booking Data:', { userId, procedureId, bookingDatetime }); // Log the received data
+
   try {
     const booking = await bookingService.createBooking(
       userId,
       procedureId,
-      bookingDatetime,
+      bookingDatetime
     );
     res.status(201).json(booking);
   } catch (error) {
