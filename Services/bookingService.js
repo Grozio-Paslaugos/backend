@@ -16,6 +16,13 @@ class BookingService {
       throw new Error("Please fill all fields");
     }
 
+    const bookingDate = new Date(bookingDatetime);
+    if (isNaN(bookingDate.getTime())) {
+      throw new Error("Invalid date format");
+    }
+
+    console.log("Creating booking with date:", bookingDatetime);
+
     const booking = await Booking.create({
       user_id: userId,
       procedure_id: procedureId,
@@ -41,6 +48,7 @@ class BookingService {
     if (!booking) {
       throw new Error("Booking not found");
     }
+    console.log("Retrieved booking with date:", booking.booking_datetime);
     return booking;
   }
 
@@ -87,6 +95,7 @@ class BookingService {
     if (!booking) {
       throw new Error("Booking not found");
     }
+    console.log("Updated booking with date:", booking.booking_datetime);
     return booking;
   }
 
@@ -103,6 +112,7 @@ class BookingService {
     if (!booking) {
       throw new Error("Booking not found");
     }
+    console.log("Deleted booking with date:", booking.booking_datetime);
     return booking;
   }
 }
